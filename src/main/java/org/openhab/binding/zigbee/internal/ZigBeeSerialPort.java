@@ -31,6 +31,7 @@ import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
+import gnu.io.RXTXPort;
 import gnu.io.UnsupportedCommOperationException;
 
 /**
@@ -129,7 +130,7 @@ public class ZigBeeSerialPort implements ZigBeePort, SerialPortEventListener {
                     flowControl);
             try {
                 CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
-                CommPort commPort = portIdentifier.open("org.openhab.binding.zigbee", 100);
+                RXTXPort commPort = new RXTXPort(portIdentifier.getName());
                 serialPort = (SerialPort) commPort;
                 serialPort.setSerialPortParams(baudRate, SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
                         SerialPort.PARITY_NONE);
