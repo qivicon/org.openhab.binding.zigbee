@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zigbee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/thing-description-1.0.0.xsd">
+
+	<thing-type id="bitron_video_902010_28">
+
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="coordinator_telegesis" />
+			<bridge-type-ref id="coordinator_ember" />
+		</supported-bridge-type-refs>
+
+		<label>BitronVideo Smart Plug</label>
+		<description>BitronVideo Smart Plug</description>
+
+		<channels>
+			
+			<channel typeId="switch_onoff" id="switch">
+				<properties>
+					<property name="zigbee_endpoint">1</property>
+				</properties>
+			</channel>
+			
+			<!-- What about signal strength? That was in the bridge thing type... -->
+			
+		</channels>
+
+		<properties>
+			<property name="vendor">Bitron Home</property>
+			<property name="modelId">902010/28</property>
+			<property name="connection">NETWORK</property>
+			<property name="communicationType">GATEWAY</property>
+			<property name="configurationType">SYNCHRONOUS</property>
+			<property name="resetType">DEVICE</property>
+		</properties>
+
+	</thing-type>
+</thing:thing-descriptions>

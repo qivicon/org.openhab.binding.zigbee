@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="zigbee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/thing-description-1.0.0.xsd">
+
+	<!-- CLA60 RGBW OSRAM -->
+	<thing-type id="osram-cla60-rgbw">
+
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="coordinator_telegesis" />
+			<bridge-type-ref id="coordinator_ember" />
+		</supported-bridge-type-refs>
+
+		<label>Osram CLA60 RGBW</label>
+
+		<channels>
+			<channel typeId="color_color" id="color">
+				<properties>
+					<property name="zigbee_endpoint">3</property>
+				</properties>
+			</channel>
+
+			<channel typeId="color_temperature" id="colorTemperature">
+				<properties>
+					<property name="zigbee_endpoint">3</property>
+				</properties>
+			</channel>
+		</channels>
+
+		<!-- Missing from original bridge thing type: signal strength -->
+
+		<properties>
+			<property name="vendor">OSRAM</property>
+			<property name="modelId">CLA60 RGBW OSRAM</property>
+			<property name="connection">NETWORK</property>
+			<property name="communicationType">GATEWAY</property>
+			<property name="configurationType">SYNCHRONOUS</property>
+			<property name="resetType">DEVICE</property>
+		</properties>
+
+	</thing-type>
+
+</thing:thing-descriptions>
