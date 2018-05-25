@@ -6,7 +6,7 @@ Bundle-Name: ZigBee CC2531 Binding
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-SymbolicName: org.openhab.binding.zigbee.cc2531;singleton:=true
 Bundle-Vendor: openHAB
-Bundle-Version: 2.3.0.qualifier
+Bundle-Version: 2.3.167.qualifier
 Export-Package: 
  org.openhab.binding.zigbee.cc2531,
  org.openhab.binding.zigbee.cc2531.handler
@@ -30,5 +30,6 @@ Import-Package: com.zsmartsystems.zigbee,
  org.openhab.binding.zigbee.discovery,
  org.openhab.binding.zigbee.handler,
  org.osgi.framework,
+ org.osgi.service.component.annotations;resolution:=optional,
  org.slf4j
 Service-Component: OSGI-INF/*.xml

@@ -1,19 +1,14 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.openhab</groupId>
-        <artifactId>pom-tycho</artifactId>
-        <version>2.3.0-SNAPSHOT</version>
-        <relativePath />
-    </parent>
 
-    <groupId>org.openhab.binding.zigbee</groupId>
-    <artifactId>org.openhab.binding.zigbee.parent</artifactId>
+    <groupId>org.openhab.binding</groupId>
+    <artifactId>org.openhab.binding.zigbee.pom</artifactId>
+    <version>2.3.167-SNAPSHOT</version>
 
-    <name>ZigBee Binding Parent POM</name>
+    <name>QIVICON ZigBee Binding Parent POM</name>
     <packaging>pom</packaging>
 
     <modules>
@@ -24,32 +19,358 @@
         <module>org.openhab.binding.zigbee.xbee</module>
     </modules>
 
-    <properties>
-        <report.fail.on.error>false</report.fail.on.error>
-    </properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.eclipse.jdt</groupId>
+			<artifactId>org.eclipse.jdt.annotation</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+		
+		<!-- Dependency for surefire unit tests -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
-    <scm>
-        <connection>scm:git:${scm.gitBaseUrl}/org.openhab.binding.zigbee.git</connection>
-        <developerConnection>scm:git:${scm.gitBaseUrl}/org.openhab.binding.zigbee.git</developerConnection>
-        <url>https://github.com/openhab/org.openhab.binding.zigbee</url>
-        <tag>HEAD</tag>
-    </scm>
 
-    <distributionManagement>
-        <repository>
-            <id>bintray</id>
-            <url>https://api.bintray.com/maven/openhab/mvn/org.openhab.binding.zigbee/;publish=1</url>
-        </repository>
-        <snapshotRepository>
-            <id>jfrog</id>
-            <url>https://openhab.jfrog.io/openhab/libs-snapshot-local</url>
-        </snapshotRepository>
-    </distributionManagement>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
+		<zsmartsystems-version>SNAPSHOT</zsmartsystems-version>
+		<maven.compiler.version>3.6.1</maven.compiler.version>
+		<maven.install.version>2.5.2</maven.install.version>
+		<maven.deploy.version>2.8.2</maven.deploy.version>
+		<tycho-groupid>org.eclipse.tycho</tycho-groupid>
+		<tycho-version>1.0.0</tycho-version>
+
+		<nexus.host>http://qivicon-wbench.psst.t-online.corp</nexus.host>
+		
+		<esh.version>SNAPSHOT</esh.version>
+		<esh.p2.repository.url>${nexus.host}/nexus/content/unzip/snapshots_unzip/org/eclipse/smarthome/products/org.eclipse.smarthome.repo/${esh.version}/org.eclipse.smarthome.repo-${esh.version}.zip-unzip/</esh.p2.repository.url>
+		<system-apps.version>SNAPSHOT</system-apps.version>
+		<system-apps.p2.repository.url>${nexus.host}/nexus/content/unzip/s_snapshots_unzip/com/qivicon/system/com.qivicon.system.apps.repository/${system-apps.version}/com.qivicon.system.apps.repository-${system-apps.version}.zip-unzip/</system-apps.p2.repository.url>
+		<qivicon.orbit.version>1.0.72</qivicon.orbit.version>
+		<qivicon.orbit.p2.repository.url>${nexus.host}/nexus/content/unzip/2ndparty_unzip/com/qivicon/orbit/com.qivicon.orbit.repo/${qivicon.orbit.version}/com.qivicon.orbit.repo-${qivicon.orbit.version}.zip-unzip/</qivicon.orbit.p2.repository.url>
+		<prosyst.repository.version>SNAPSHOT</prosyst.repository.version>
+		<qivicon.prosyst.p2.repository.url>${nexus.host}/nexus/content/unzip/snapshots_unzip/com/qivicon/runtime/prosyst-repository/${prosyst.repository.version}/prosyst-repository-${prosyst.repository.version}-bin.zip-unzip/</qivicon.prosyst.p2.repository.url>
+                <qivicon.zigbee-dongles.p2.repository.url>${nexus.host}/nexus/content/unzip/snapshots_unzip/com/zsmartsystems/com.qivicon.zigbee-dongles.repository/${zsmartsystems-version}/com.qivicon.zigbee-dongles.repository-${zsmartsystems-version}.zip-unzip/</qivicon.zigbee-dongles.p2.repository.url>
+
+		<maven-scr-plugin.version>1.24.0</maven-scr-plugin.version>
+		<ds-annotations.version>1.2.10</ds-annotations.version>
+		
+		<maven.javadoc.skip>true</maven.javadoc.skip>
+	</properties>
+
+	<profiles>
+
+		<profile>
+			<id>apps</id>
+
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.felix</groupId>
+						<artifactId>maven-scr-plugin</artifactId>
+						<version>${maven-scr-plugin.version}</version>
+						<configuration>
+							<supportedProjectTypes>
+								<supportedProjectType>eclipse-plugin</supportedProjectType>
+							</supportedProjectTypes>
+						</configuration>
+						<executions>
+							<execution>
+								<id>generate-scr-scrdescriptor</id>
+								<goals>
+									<goal>scr</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<version>${tycho-version}</version>
+						<configuration>
+							<environments>
+								<environment>
+									<os>*</os>
+									<ws>*</ws>
+									<arch>*</arch>
+								</environment>
+							</environments>
+							<dependency-resolution>
+								<extraRequirements>
+									<requirement>
+										<type>eclipse-plugin</type>
+										<id>javax.servlet</id>
+										<versionRange>4.1.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>eclipse-plugin</type>
+										<id>org.eclipse.equinox.ds</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>eclipse-plugin</type>
+										<id>org.eclipse.equinox.http.servlet</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>eclipse-plugin</type>
+										<id>org.eclipse.equinox.http.jetty</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+								</extraRequirements>
+							</dependency-resolution>
+							<pomDependencies>consider</pomDependencies>
+							<filters>
+							  <!-- There are multiple bundles providing package org.slf4j in the target platform; include only the bundle we actually use on the gateways -->
+							  <filter>
+							    <type>java-package</type>
+							    <id>org.slf4j</id>
+							    <restrictTo>
+							      <type>eclipse-plugin</type>
+							      <id>com.qivicon.log</id>
+							    </restrictTo>
+							  </filter>
+							</filters>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>${tycho-groupid}</groupId>
+						<artifactId>tycho-maven-plugin</artifactId>
+						<version>${tycho-version}</version>
+						<extensions>true</extensions>
+					</plugin>
+					<plugin>
+						<groupId>${tycho-groupid}</groupId>
+						<artifactId>tycho-compiler-plugin</artifactId>
+						<version>${tycho-version}</version>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<source>1.8</source>
+							<target>1.8</target>
+							<extraClasspathElements>
+								<extraClasspathElement>
+									<groupId>com.qivicon.binding</groupId>
+									<artifactId>com.qivicon.binding.commons</artifactId>
+									<version>${project.version}</version>
+								</extraClasspathElement>
+							</extraClasspathElements>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>${tycho-groupid}</groupId>
+						<artifactId>tycho-packaging-plugin</artifactId>
+						<version>${tycho-version}</version>
+						<configuration>
+							<strictBinIncludes>false</strictBinIncludes>
+						</configuration>
+					</plugin>
+
+				</plugins>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>com.coderplus.maven.plugins</groupId>
+							<artifactId>copy-rename-maven-plugin</artifactId>
+							<version>1.0</version>
+							<executions>
+								<execution>
+									<id>copy-properties-files</id>
+									<phase>generate-sources</phase>
+									<goals>
+										<goal>copy</goal>
+									</goals>
+									<configuration>
+										<overWrite>false</overWrite>
+										<ignoreFileNotFoundOnIncremental>true</ignoreFileNotFoundOnIncremental>
+										<fileSets>
+											<fileSet>
+												<sourceFile>ESH-INF/i18n/${binding.id}.properties</sourceFile>
+												<destinationFile>ESH-INF/i18n/${binding.id}_en.properties</destinationFile>
+											</fileSet>
+											<fileSet>
+												<sourceFile>ESH-INF/i18n/${binding.id}.properties</sourceFile>
+												<destinationFile>ESH-INF/i18n/${binding.id}_en_US.properties</destinationFile>
+											</fileSet>
+										</fileSets>
+									</configuration>
+								</execution>
+							</executions>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+			<dependencies>
+				<dependency>
+					<groupId>org.apache.felix</groupId>
+					<artifactId>org.apache.felix.scr.ds-annotations</artifactId>
+					<version>${ds-annotations.version}</version>
+					<scope>provided</scope>
+					<optional>true</optional>	
+				</dependency>
+			</dependencies>
+		</profile>
+
+
+		<profile>
+			<id>snapshot-version</id>
+			<properties>
+				<sprint-number>0</sprint-number>
+				<hotfix-number>0</hotfix-number>
+				<maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
+				<snapshot-build-version>1.${sprint-number}.${hotfix-number}-SNAPSHOT</snapshot-build-version>
+				<includesList>com.qivicon*:*</includesList>
+				<newVersion>${snapshot-build-version}</newVersion>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-versions-plugin</artifactId>
+						<version>${tycho-version}</version>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+		<profile>
+			<id>release-version</id>
+			<properties>
+				<sprint-number>0</sprint-number>
+				<hotfix-number>0</hotfix-number>
+				<maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
+				<release-build-version>1.${sprint-number}.${hotfix-number}.${maven.build.timestamp}</release-build-version>
+				<includesList>com.qivicon*:*</includesList>
+				<newVersion>${release-build-version}</newVersion>
+				<system-apps.version>1.${sprint-number}.0</system-apps.version>
+				<esh.p2.repository.url>${nexus.host}/nexus/content/unzip/2ndparty_unzip/org/eclipse/smarthome/products/org.eclipse.smarthome.repo/${esh.version}/org.eclipse.smarthome.repo-${esh.version}.zip-unzip/</esh.p2.repository.url>
+				<system-apps.p2.repository.url>${nexus.host}/nexus/content/unzip/s_2ndparty_unzip/com/qivicon/system/com.qivicon.system.apps.repository/${system-apps.version}/com.qivicon.system.apps.repository-${system-apps.version}.zip-unzip/</system-apps.p2.repository.url>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>build-helper-maven-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-versions-plugin</artifactId>
+						<version>${tycho-version}</version>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+		<profile>
+			<id>QA</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<version>0.7.6.201602180812</version>
+						<configuration>
+							<dataFile>${session.executionRootDirectory}/target/coverage.jacoco</dataFile>
+							<destFile>${session.executionRootDirectory}/target/coverage.jacoco</destFile>
+							<append>true</append>
+							<excludes>
+								<exclude>**/*Test.*</exclude>
+							</excludes>
+						</configuration>
+						<executions>
+							<execution>
+								<id>default-prepare-agent</id>
+								<goals>
+									<goal>prepare-agent</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>default-prepare-agent-integration</id>
+								<goals>
+									<goal>prepare-agent-integration</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
     <build>
         <testSourceDirectory>src/test</testSourceDirectory>
+
+	<pluginManagement>
+		<plugins>
+			<plugin>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>${maven.install.version}</version>
+				<configuration>
+					<skip>false</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>${maven.deploy.version}</version>
+				<configuration>
+					<skip>false</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</pluginManagement>
+
+	<plugins>
+
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-javadoc-plugin</artifactId>
+		<version>2.10.3</version>
+		<executions>
+			<execution>
+				<id>attach-javadocs</id>
+				<goals>
+					<goal>jar</goal>
+				</goals>
+			</execution>
+		</executions>
+		<configuration>
+			<skip>${maven.javadoc.skip}</skip>
+			<additionalparam>-Xdoclint:none</additionalparam>
+			<excludePackageNames>*.internal.*,nl.*</excludePackageNames>
+			<failOnError>false</failOnError>
+			<notimestamp>true</notimestamp>
+			<excludePackageNames>*.impl.*</excludePackageNames>
+			<bottom>&lt;H5&gt;Copyright &#169; 2013 &lt;a
+				href=\"http://www.qivicon.de\"&gt;Deutsche Telekom AG&lt;/a&gt;.
+				All Rights Reserved.&lt;/H5&gt;</bottom>
+		</configuration>
+	</plugin>
+
+       <plugin>
+		<artifactId>maven-install-plugin</artifactId>
+		<inherited>false</inherited>
+		<configuration>
+			<skip>false</skip>
+		</configuration>
+	</plugin>
+
+	<plugin>
+		<artifactId>maven-deploy-plugin</artifactId>
+		<inherited>false</inherited>
+		<configuration>
+			<skip>false</skip>
+		</configuration>
+	</plugin>
         
-        <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -69,6 +390,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -90,100 +412,69 @@
         </plugins>
     </build>
 
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+	<repositories>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>central</id>
+			<name>Maven Repository Switchboard</name>
+			<url>http://repo1.maven.org/maven2</url>
+		</repository>
+		<repository>
+			<id>EclipseSmarthome Qivicon</id>
+			<url>${esh.p2.repository.url}</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>esh_3rdParty</id>
+			<url>http://eclipse.github.io/smarthome/third-party/target/repository</url>
+			<layout>p2</layout>
+		</repository>
+		<!--
+			The system-apps repository is included to resolve the dependencies to the following bundles:
+			* com.qivicon.log.api
+			* com.qivicon.log
+			* com.qivicon.manifest.api
+			* com.google.gson
+			* com.qivicon.service.preferences
+			* org.eclipse.jetty.util
+		-->
+		<repository>
+			<id>nexus-chgw-snapshots</id>
+			<url>${system-apps.p2.repository.url}</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>qivicon-orbit</id>
+			<url>${qivicon.orbit.p2.repository.url}</url>
+			<layout>p2</layout>
+		</repository>
+		<!--The ProSyst repository is here to resolve the dependency to the bundles containing the package gnu.io -->
+		<repository>
+			<id>ProSyst Repository</id>
+			<url>${qivicon.prosyst.p2.repository.url}</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+                        <id>Qivicon Zigbee Dongles Repository</id>
+                        <url>${qivicon.zigbee-dongles.p2.repository.url}</url>
+                        <layout>p2</layout>
+                </repository>
+	</repositories>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>jcenter</id>
-            <name>JCenter Repository</name>
-            <url>https://jcenter.bintray.com/</url>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-        <pluginRepository>
-            <id>artifactory</id>
-            <name>JFrog Artifactory Repository</name>
-            <url>https://openhab.jfrog.io/openhab/libs-release</url>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-
-    </pluginRepositories>
-
-    <repositories>
-
-        <!-- releases -->
-        <repository>
-            <id>jcenter</id>
-            <name>JCenter Repository</name>
-            <url>https://jcenter.bintray.com/</url>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-
-        <repository>
-            <id>openhab-artifactory-release</id>
-            <name>JFrog Artifactory Repository</name>
-            <url>https://openhab.jfrog.io/openhab/libs-release</url>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-
-        <!-- snapshots -->
-        <repository>
-            <id>openhab-artifactory-snapshot</id>
-            <name>JFrog Artifactory Repository</name>
-            <url>https://openhab.jfrog.io/openhab/libs-snapshot</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-
-        <!-- SmartHome p2 repository -->
-        <repository>
-            <id>p2-smarthome</id>
-            <url>https://openhab.jfrog.io/openhab/eclipse-smarthome-stable</url>
-            <layout>p2</layout>
-        </repository>
-
-        <!-- openHAB dependencies p2 repository -->
-        <repository>
-            <id>p2-openhab-deps-repo</id>
-            <url>https://dl.bintray.com/openhab/p2/openhab-deps-repo/${ohdr.version}</url>
-            <layout>p2</layout>
-        </repository>
-
-    </repositories>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>nexus-sec-snapshots</id>
+			<name>Nexus Secure Staging Repo</name>
+			<url>${nexus.host}/nexus/content/repositories/snapshots/</url>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
+		<repository>
+			<id>nexus-sec-releases</id>
+			<name>Nexus Secure Release Repo</name>
+			<url>${nexus.host}/nexus/content/repositories/s_2ndparty/</url>
+		</repository>
+	</distributionManagement>
     
 </project>
