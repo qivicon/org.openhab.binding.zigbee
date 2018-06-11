@@ -22,6 +22,7 @@
         <module>org.openhab.binding.zigbee.telegesis</module>
         <module>org.openhab.binding.zigbee.cc2531</module>
         <module>org.openhab.binding.zigbee.xbee</module>
+        <module>org.openhab.binding.zigbee.thingtypes</module>
     </modules>
 
     <properties>

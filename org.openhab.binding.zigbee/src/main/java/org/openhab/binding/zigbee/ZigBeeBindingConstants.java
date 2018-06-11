@@ -37,16 +37,9 @@ public class ZigBeeBindingConstants {
     public final static ThingTypeUID THING_TYPE_PHILIPS_SML001 = new ThingTypeUID(BINDING_ID, "philips_sml001");
     public final static ThingTypeUID THING_TYPE_SMARTTHINGS_MOTIONV4 = new ThingTypeUID(BINDING_ID,
             "smartthings_motionv4");
-    public final static ThingTypeUID THING_TYPE_QIVICON_BV_902010_25 = new ThingTypeUID(BINDING_ID,
-            "bitron_video_902010_25");
-    public final static ThingTypeUID THING_TYPE_QIVICON_BV_902010_28 = new ThingTypeUID(BINDING_ID,
-            "bitron_video_902010_28");
-    public final static ThingTypeUID THING_TYPE_QIVICON_OSRAM_CLA60_RGBW = new ThingTypeUID(BINDING_ID,
-            "osram-cla60-rgbw");
 
-    public final static Set<ThingTypeUID> SUPPORTED_THING_TYPES = Collections.unmodifiableSet(Sets.newHashSet(
-            THING_TYPE_GENERIC_DEVICE, THING_TYPE_PHILIPS_SML001, THING_TYPE_SMARTTHINGS_MOTIONV4,
-            THING_TYPE_QIVICON_BV_902010_25, THING_TYPE_QIVICON_BV_902010_28, THING_TYPE_QIVICON_OSRAM_CLA60_RGBW));
+    public final static Set<ThingTypeUID> SUPPORTED_THING_TYPES = Collections.unmodifiableSet(
+            Sets.newHashSet(THING_TYPE_GENERIC_DEVICE, THING_TYPE_PHILIPS_SML001, THING_TYPE_SMARTTHINGS_MOTIONV4));
 
     // List of Channel UIDs
     public static final String CHANNEL_NAME_SWITCH_ONOFF = "switch";
